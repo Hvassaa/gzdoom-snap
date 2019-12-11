@@ -24,7 +24,7 @@ but if you have any recommendation or corrections, please do let me know.
 
 
 ## Version
-g4.2 (I am still working on the snap itself, the GZDoom version is 4.2)
+Latest from the GZDoom git repository (I am still working on the snap itself, the GZDoom version is 4.2)
 
 ## Installation
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
