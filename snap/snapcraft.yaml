@@ -1,6 +1,6 @@
 name: gzdoom
 base: core18
-version: 'g4.3.2'
+version: 'g4.3.3'
 summary: Doom Source Port
 description: |
   Snap build from https://github.com/Hvassaa/gzdoom-snap
@@ -28,7 +28,7 @@ apps:
 parts:
   gzdoom:
     source: https://github.com/coelckers/gzdoom.git
-    source-tag: 'g4.3.2'
+    source-tag: 'g4.3.3'
     plugin: cmake
     configflags: ["-DCMAKE_BUILD_TYPE=Release", "-DNO_FMOD=ON"]
     build-packages:
@@ -70,8 +70,13 @@ parts:
       - libslang2
       - fluid-soundfont-gm
       - libglu1-mesa
+      - freeglut3
     after:
       - desktop-glib-only
+    override-build: |
+      snapcraftctl build
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/sounds/sf2
+      cp $SNAPCRAFT_PART_BUILD/soundfonts/gzdoom.sf2 $SNAPCRAFT_PART_INSTALL/usr/share/sounds/sf2/gzdoom.sf2
   desktop-glib-only:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: glib-only

@@ -6,4 +6,5 @@ Comment=The GZDoom Source Port
 Keywords=doom;gzdoom
 Type=Application
 Categories=Game;
-StartupNotify=true
+StartupNotify=false
+MimeType=application/x-doom-wad;
