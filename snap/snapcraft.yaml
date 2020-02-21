@@ -70,6 +70,7 @@ parts:
       - libslang2
       - fluid-soundfont-gm
       - libglu1-mesa
+      - freeglut3
     after:
       - desktop-glib-only
   desktop-glib-only:
