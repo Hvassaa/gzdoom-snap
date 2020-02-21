@@ -73,6 +73,10 @@ parts:
       - freeglut3
     after:
       - desktop-glib-only
+    override-build: |
+      snapcraftctl build
+      mkdir -p $SNAPCRAFT_PART_INSTALL/usr/share/sounds/sf2
+      cp $SNAPCRAFT_PART_BUILD/soundfonts/gzdoom.sf2 $SNAPCRAFT_PART_INSTALL/usr/share/sounds/sf2/gzdoom.sf2
   desktop-glib-only:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: glib-only
