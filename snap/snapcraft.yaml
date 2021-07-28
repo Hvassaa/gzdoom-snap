@@ -14,9 +14,9 @@ license: "GPL-3.0"
 grade: stable
 confinement: strict
 
-architectures:
-  - build-on: amd64
-    run-on: amd64
+#architectures:
+#  - build-on: amd64
+#    run-on: amd64
 
 apps:
   gzdoom:
