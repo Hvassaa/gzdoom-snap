@@ -1,6 +1,6 @@
 name: gzdoom
 base: core20
-version: '4.6'
+version: '4.10'
 summary: Doom Source Port
 description: |
   Snap build from https://github.com/Hvassaa/gzdoom-snap
@@ -14,9 +14,9 @@ license: "GPL-3.0"
 grade: stable
 confinement: strict
 
-#architectures:
-#  - build-on: amd64
-#    run-on: amd64
+architectures:
+  - build-on: amd64
+  - run-on: amd64
 
 apps:
   gzdoom:
@@ -29,7 +29,7 @@ apps:
 parts:
   gzdoom:
     source: https://github.com/coelckers/gzdoom.git
-    source-tag: '4.6'
+    source-tag: 'g4.10.0'
     override-pull: |
       snapcraftctl pull
       patch $SNAPCRAFT_PART_SRC/src/d_iwad.cpp < $SNAPCRAFT_PROJECT_DIR/snap/local/location.patch
