@@ -6,8 +6,6 @@
   GZDoom
 </h1>
 
-
-
 <p align="center"><b>This is a snap for GZDoom</b>, <i> it is not official in any way! </i>
 
 <!-- Uncomment and modify this when you are provided a build status badge
@@ -23,7 +21,7 @@
 # GZDoom snap
 [![Get it from the Snap Store](https://snapcraft.io/static/images/badges/en/snap-store-white.svg)](https://snapcraft.io/gzdoom)
     
-This is the Doom source port GZDoom, as a snap. It is still a WIP.
+This is the Doom source port GZDoom, as a snap.
 
 I tried using the newest conventions and so from snapcraft,
 but if you have any recommendation or corrections, please do let me know.
@@ -32,7 +30,7 @@ Furthermore, I only have amd64 hardware avaible, so that is what I can test it o
 If you have other hardware avaible and you have tested it there, let me know as well.
 
 ## Version
-4.6
+4.10
 
 ## Installation
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
@@ -97,6 +95,13 @@ The first time you launch the app, it will inform you that no WADs were found, d
 See https://github.com/coelckers/gzdoom/tree/master/docs/licenses and https://zdoom.org/wiki/License
 
 (Primarily GPL-3.0)
+
+## Changes for the snap
+### December 9 2022
+- Updated to GZDoom 4.10
+- Updated to use `core22`
+- Dropped `organize` in favor of `layout` (for locating pk3, soundfonts, ...)
+- Music now works!
 
 ## Remaining tasks
 

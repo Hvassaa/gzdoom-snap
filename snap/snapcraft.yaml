@@ -1,6 +1,6 @@
 name: gzdoom
-base: core20
-version: '4.10'
+base: core22
+version: '4.10.0'
 summary: Doom Source Port
 description: |
   Snap build from https://github.com/Hvassaa/gzdoom-snap
@@ -8,23 +8,27 @@ description: |
   ZDoom is a family of enhanced ports of the Doom engine for running on modern operating systems.
   It runs on Windows, Linux, and OS X, and adds new features not found in the games as originally
   published by id Software.
-icon: snap/gui/gzdoom.png
 license: "GPL-3.0"
-
+source-code: "https://github.com/ZDoom/gzdoom"
 grade: stable
 confinement: strict
 
-# architectures:
-#   - build-on: amd64
-#     run-on: amd64
-
 apps:
   gzdoom:
-    command: bin/desktop-launch $SNAP/bin/gzdoom
-    plugs: [desktop, desktop-legacy, unity7, network, opengl, pulseaudio, audio-playback, joystick, x11, wayland, home]
+    command: bin/desktop-launch $SNAP/usr/local/bin/gzdoom
+    plugs:
+      - opengl
+      - x11
+      - wayland
+      - desktop
+      #- home
+      - audio-playback
     environment:
-      LD_LIBRARY_PATH: $SNAP/usr/lib/x86_64-linux-gnu/pulseaudio:$LD_LIBRARY_PATH
       KDE_FULL_SESSION: "false"
+
+layout:
+  /usr/local/share/games/doom:
+    bind: $SNAP/usr/local/share/games/doom
 
 parts:
   gzdoom:
@@ -32,20 +36,16 @@ parts:
     source-tag: 'g4.10.0'
     override-pull: |
       snapcraftctl pull
-      patch $SNAPCRAFT_PART_SRC/src/d_iwad.cpp < $SNAPCRAFT_PROJECT_DIR/snap/local/location.patch
+      patch $SNAPCRAFT_PART_SRC/src/d_iwad.cpp < $SNAPCRAFT_PROJECT_DIR/snap/local/location.patch # change "wad not found" path description
     plugin: cmake
-    cmake-parameters: 
+    cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
       - -DNO_FMOD=ON
       - -DZMUSIC_INCLUDE_DIR=$SNAPCRAFT_STAGE/usr/include
-      - -DZMUSIC_LIBRARIES=$SNAPCRAFT_STAGE/usr/lib/x86_64-linux-gnu/libzmusic.so
-      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DZMUSIC_LIBRARIES=$SNAPCRAFT_STAGE/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libzmusic.so
     build-packages:
       - g++
-      - make
-      - cmake
       - libsdl2-dev
-      - git
       - zlib1g-dev
       - libbz2-dev
       - libjpeg-dev
@@ -61,40 +61,55 @@ parts:
       - tar
       - libsdl1.2-dev
       - libglew-dev
+      - libvpx-dev
     stage-packages:
-      - libsdl2-2.0-0
-      - libopenal1
-      - libfluidsynth2
-      - libgme0
-      - libmpg123-0
-      - libsndfile1
-      - libwildmidi2
-      - libgtk-3-0
-      - timidity
-      - libsdl1.2debian
-      - libgl1-mesa-glx
-      - libpulse0
+      - libasound2
+      - libasyncns0
+      - libflac8
       - libgomp1
-      - yad
-      - libslang2
-      - fluid-soundfont-gm
-      - libglu1-mesa
-      - gxmessage
+      - libjpeg-turbo8
+      - libogg0
+      - libpulse0
+      - libsdl2-2.0-0
+      - libsndfile1
+      - libvorbis0a
+      - libvorbisenc2
+      - libwayland-client0
+      - libwayland-cursor0
+      - libwayland-egl1
+      - libx11-6
+      - libxau6
+      - libxcb1
+      - libxcursor1
+      - libxdmcp6
+      - libxext6
+      - libxfixes3
+      - libxi6
+      - libxinerama1
+      - libxkbcommon0
+      - libxrandr2
+      - libxrender1
+      - libxss1
+      - libxxf86vm1
+      - libvpx7
+      - libgl1 # not detected by snapcraft
+      - libopenal1 # not detected by snapcraft
+      # It seems these are needed for graphical wad selector
       - kdialog
-      - fluidsynth
-    organize:
-      $SNAPCRAFT_PART_BUILD/brightmaps.pk3: /bin/
-      $SNAPCRAFT_PART_BUILD/fm_banks: /bin/
-      $SNAPCRAFT_PART_BUILD/game_support.pk3: /bin/
-      $SNAPCRAFT_PART_BUILD/game_widescreen_gfx.pk3: /bin/
-      $SNAPCRAFT_PART_BUILD/gzdoom: /bin/
-      $SNAPCRAFT_PART_BUILD/gzdoom.pk3: /bin/
-      $SNAPCRAFT_PART_BUILD/libzmusic.so.1: /bin/
-      $SNAPCRAFT_PART_BUILD/lights.pk3: /bin/
-      $SNAPCRAFT_PART_BUILD/soundfonts: /bin/
+      - gxmessage
     after:
-      - desktop-glib-only
       - zmusic
+      - desktop-glib-only 
+  zmusic:
+    source: https://github.com/coelckers/ZMusic.git
+    plugin: cmake
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+    build-packages:
+      - g++
+    stage-packages:
+      - libasound2
   desktop-glib-only:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: glib-only
@@ -103,18 +118,3 @@ parts:
       - libglib2.0-dev
     stage-packages:
       - libglib2.0-bin
-  zmusic:
-    source: https://github.com/coelckers/ZMusic.git
-    plugin: cmake
-    cmake-parameters: 
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DCMAKE_INSTALL_PREFIX=/usr
-    build-packages:
-      - g++
-      - make
-      - cmake
-    stage-packages:
-      - libasound2
-    organize:
-      $SNAPCRAFT_PART_SRC/include/zmusic.h: $SNAPCRAFT_STAGE/include
-      $SNAPCRAFT_PART_INSTALL/usr/local/share/games/doom: /bin/
