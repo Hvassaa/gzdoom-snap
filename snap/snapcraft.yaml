@@ -94,6 +94,7 @@ parts:
       - libvpx7
       - libgl1 # not detected by snapcraft
       - libopenal1 # not detected by snapcraft
+      - xcb # not detected by snapcraft
       # It seems these are needed for graphical wad selector
       - kdialog
       - gxmessage
