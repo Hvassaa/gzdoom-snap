@@ -62,6 +62,10 @@ parts:
       - libsdl1.2-dev
       - libglew-dev
       - libvpx-dev
+      # trying to fix xcb related errors
+      - libxcb1-dev
+      - libx11-xcb-dev
+      - libxcb-glx0-dev
     stage-packages:
       - libasound2
       - libasyncns0
@@ -94,10 +98,14 @@ parts:
       - libvpx7
       - libgl1 # not detected by snapcraft
       - libopenal1 # not detected by snapcraft
-      - xcb # not detected by snapcraft
       # It seems these are needed for graphical wad selector
       - kdialog
       - gxmessage
+      # trying to fix xcb related erros here
+      - xcb # not detected by snapcraft
+      - libxcb1
+      - libx11-xcb1
+      - libxcb-glx0
     after:
       - zmusic
       - desktop-glib-only 
