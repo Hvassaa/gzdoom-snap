@@ -21,7 +21,7 @@ apps:
       - x11
       - wayland
       - desktop
-      #- home
+      - desktop-legacy
       - audio-playback
     environment:
       KDE_FULL_SESSION: "false"
