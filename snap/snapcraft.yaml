@@ -106,9 +106,10 @@ parts:
       - libxcb1
       - libx11-xcb1
       - libxcb-glx0
+      - qtwayland5
     after:
       - zmusic
-      - desktop-glib-only 
+      - desktop-glib-only
   zmusic:
     source: https://github.com/coelckers/ZMusic.git
     plugin: cmake
