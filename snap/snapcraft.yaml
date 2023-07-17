@@ -1,6 +1,6 @@
 name: gzdoom
 base: core18
-version: '4.10.0'
+version: 'g4.2.4'
 summary: Doom Source Port
 description: |
   Snap build from https://github.com/Hvassaa/gzdoom-snap
@@ -14,37 +14,19 @@ license: "GPL-3.0"
 grade: stable
 confinement: strict
 
-layout:
-  /usr/local/share/games/doom:
-    bind: $SNAP/usr/local/share/games/doom
-
 apps:
   gzdoom:
-    command: bin/desktop-launch $SNAP/usr/local/bin/gzdoom
-    plugs:
-      - opengl
-      - x11
-      - wayland
-      - desktop
-      - desktop-legacy
-      - audio-playback
-      - joystick
+    command: desktop-launch $SNAP/bin/gzdoom
+    plugs: [desktop, desktop-legacy, unity7, network, opengl, pulseaudio, audio-playback, joystick, x11, wayland, home]
     environment:
-      KDE_FULL_SESSION: "false"
+      LD_LIBRARY_PATH: $SNAP/usr/lib/x86_64-linux-gnu/pulseaudio:$LD_LIBRARY_PATH
 
 parts:
   gzdoom:
     source: https://github.com/coelckers/gzdoom.git
-    source-tag: 'g4.10.0'
-    override-pull: |
-      snapcraftctl pull
-      patch $SNAPCRAFT_PART_SRC/src/d_iwad.cpp < $SNAPCRAFT_PROJECT_DIR/snap/local/location.patch # change "wad not found" path description
+    source-tag: 'g4.2.4'
     plugin: cmake
-    configflags:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DNO_FMOD=ON
-      - -DZMUSIC_INCLUDE_DIR=$SNAPCRAFT_STAGE/usr/include
-      - -DZMUSIC_LIBRARIES=$SNAPCRAFT_STAGE/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libzmusic.so
+    configflags: ["-DCMAKE_BUILD_TYPE=Release", "-DNO_FMOD=ON"]
     build-packages:
       - g++
       - make
@@ -83,22 +65,11 @@ parts:
       - yad
       - libslang2
       - fluid-soundfont-gm
-      - kdialog
-      - gxmessage
       - libglu1-mesa
+      - kdialog
+      - xcb
     after:
       - desktop-glib-only
-      - zmusic
-  zmusic:
-    source: https://github.com/coelckers/ZMusic.git
-    plugin: cmake
-    configflags:
-      - -DCMAKE_BUILD_TYPE=Release
-      - -DCMAKE_INSTALL_PREFIX=/usr
-    build-packages:
-      - g++
-    stage-packages:
-      - libasound2
   desktop-glib-only:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: glib-only
@@ -108,3 +79,8 @@ parts:
     stage-packages:
       - libglib2.0-bin
 
+layout:
+  /usr/share/games/doom: # to locate the .pk3 files
+    bind: $SNAP/share/games/doom
+  /usr/share/doom/soundfonts: # to locate the soundfonts
+    bind: $SNAP/usr/share/sounds/sf2
