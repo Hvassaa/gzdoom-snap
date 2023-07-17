@@ -23,6 +23,7 @@ apps:
       - desktop
       - desktop-legacy
       - audio-playback
+    extensions: [kde-neon]
     environment:
       KDE_FULL_SESSION: "false"
 
