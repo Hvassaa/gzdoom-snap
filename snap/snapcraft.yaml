@@ -111,7 +111,6 @@ parts:
       - libqt5gui5
     after:
       - zmusic
-      - desktop-glib-only
       - desktop-qt5
   zmusic:
     source: https://github.com/coelckers/ZMusic.git
@@ -123,14 +122,6 @@ parts:
       - g++
     stage-packages:
       - libasound2
-  desktop-glib-only:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: glib-only
-    plugin: make
-    build-packages:
-      - libglib2.0-dev
-    stage-packages:
-      - libglib2.0-bin
   desktop-qt5:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: qt
