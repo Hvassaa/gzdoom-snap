@@ -106,7 +106,9 @@ parts:
       - libxcb1
       - libx11-xcb1
       - libxcb-glx0
+      # new
       - qtwayland5
+      - libqt5gui5
     after:
       - zmusic
       - desktop-glib-only
