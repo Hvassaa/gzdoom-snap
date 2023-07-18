@@ -1,38 +1,53 @@
 name: gzdoom
-base: core18
-version: 'g4.2.4'
+base: core22
+version: '4.10.0'
 summary: Doom Source Port
 description: |
   Snap build from https://github.com/Hvassaa/gzdoom-snap
-  To setup WADs, run the app once and put them in ~/snap/gzdoom/.config/gzdoom/
+  To setup WADs, run the app once and put them in ~/snap/gzdoom/current/.config/gzdoom/
   ZDoom is a family of enhanced ports of the Doom engine for running on modern operating systems.
   It runs on Windows, Linux, and OS X, and adds new features not found in the games as originally
   published by id Software.
-icon: snap/gui/gzdoom.png
 license: "GPL-3.0"
-
+source-code: "https://github.com/ZDoom/gzdoom"
 grade: stable
 confinement: strict
 
 apps:
   gzdoom:
-    command: desktop-launch $SNAP/bin/gzdoom
-    plugs: [desktop, desktop-legacy, unity7, network, opengl, pulseaudio, audio-playback, joystick, x11, wayland, home]
+    command: bin/desktop-launch $SNAP/usr/local/bin/gzdoom
+    plugs:
+      - opengl
+      - x11
+      - wayland
+      - desktop
+      - desktop-legacy
+      - audio-playback
     environment:
-      LD_LIBRARY_PATH: $SNAP/usr/lib/x86_64-linux-gnu/pulseaudio:$LD_LIBRARY_PATH
+      KDE_FULL_SESSION: "false"
+
+layout:
+  /usr/local/share/games/doom:
+    bind: $SNAP/usr/local/share/games/doom
 
 parts:
   gzdoom:
     source: https://github.com/coelckers/gzdoom.git
-    source-tag: 'g4.2.4'
+    source-tag: 'g4.10.0'
+    override-pull: |
+      snapcraftctl pull
+      patch $SNAPCRAFT_PART_SRC/src/d_iwad.cpp < $SNAPCRAFT_PROJECT_DIR/snap/local/location.patch # change "wad not found" path description
     plugin: cmake
-    configflags: ["-DCMAKE_BUILD_TYPE=Release", "-DNO_FMOD=ON"]
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DNO_FMOD=ON
+      - -DZMUSIC_INCLUDE_DIR=$SNAPCRAFT_STAGE/usr/include
+      - -DZMUSIC_LIBRARIES=$SNAPCRAFT_STAGE/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libzmusic.so
     build-packages:
       - g++
       - make
       - cmake
       - libsdl2-dev
-      - git
       - zlib1g-dev
       - libbz2-dev
       - libjpeg-dev
@@ -48,39 +63,63 @@ parts:
       - tar
       - libsdl1.2-dev
       - libglew-dev
+      - libvpx-dev
     stage-packages:
+      - kdialog
+      - gxmessage
       - libsdl2-2.0-0
+      - libvpx7
+      - libgomp1
+      - fluidsynth
+      - libfluidsynth3
+      - fluid-soundfont-gm
+      - timidity
       - libopenal1
-      - libfluidsynth1
-      - libgme0
       - libmpg123-0
       - libsndfile1
-      - libwildmidi2
-      - libgtk-3-0
-      - timidity
-      - libsdl1.2debian
-      - libgl1-mesa-glx
-      - libpulse0
-      - libgomp1
-      - yad
-      - libslang2
-      - fluid-soundfont-gm
-      - libglu1-mesa
-      - kdialog
-      - xcb
     after:
-      - desktop-glib-only
-  desktop-glib-only:
-    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
-    source-subdir: glib-only
-    plugin: make
+      - zmusic
+      - desktop-qt5
+  zmusic:
+    source: https://github.com/coelckers/ZMusic.git
+    source-tag: '1.1.12'
+    plugin: cmake
+    cmake-parameters:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
     build-packages:
-      - libglib2.0-dev
+      - g++
     stage-packages:
-      - libglib2.0-bin
-
-layout:
-  /usr/share/games/doom: # to locate the .pk3 files
-    bind: $SNAP/share/games/doom
-  /usr/share/doom/soundfonts: # to locate the soundfonts
-    bind: $SNAP/usr/share/sounds/sf2
+      - libasound2
+  # desktop-glib-only:
+  #   source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+  #   source-subdir: glib-only
+  #   plugin: make
+  #   build-packages:
+  #     - libglib2.0-dev
+  #   stage-packages:
+  #     - libglib2.0-bin
+  desktop-qt5:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: qt
+    plugin: make
+    make-parameters: ["FLAVOR=qt5"]
+    build-packages:
+      - build-essential
+      - qtbase5-dev
+      - dpkg-dev
+    stage-packages:
+      - libxkbcommon0
+      - fonts-ubuntu # previously ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libqt5gui5
+      - libgdk-pixbuf2.0-0
+      - libqt5svg5 # for loading icon themes which are svg
+      # - appmenu-qt5 # not available on core18
+      - locales-all
+      - xdg-user-dirs
+      - fcitx-frontend-qt5
