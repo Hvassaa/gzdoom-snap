@@ -73,17 +73,23 @@ The first time you launch the app, it will inform you that no WADs were found, d
   <img src="screenshot1.png" alt="Screenshot 1 here!">
   <br />
 </h1>
-<p align="center">The WAD selector</p>
+<p align="center">The WAD selector, under Gnome</p>
 
 <h1 align="center">
-  <img src="screenshot2.png" alt="Screenshot 2 here!">
+  <img src="screenshot2.png" alt="Screenshot 1 here!">
+  <br />
+</h1>
+<p align="center">The WAD selector, under KDE Plasma on Wayland!</p>
+
+<h1 align="center">
+  <img src="screenshot3.png" alt="Screenshot 2 here!">
   <br />
 </h1>
 <p align="center">Scene from  <a href="https://freedoom.github.io/">Freedoom:</a> Phase 1</p>
 
 
 <h1 align="center">
-  <img src="screenshot3.png" alt="Screenshot 3 here!">
+  <img src="screenshot4.png" alt="Screenshot 3 here!">
   <br />
 </h1>
 <p align="center">Another scene from  <a href="https://freedoom.github.io/">Freedoom:</a> Phase 1</p>
@@ -97,6 +103,10 @@ See https://github.com/coelckers/gzdoom/tree/master/docs/licenses and https://zd
 (Primarily GPL-3.0)
 
 ## Changes for the snap
+### December 18 july 2023
+- For some reason, the snap seemed to not work, that should be fixed now!
+- (using `dekstop-qt5` instead of `desktop-glib-only` for `desktop-launch`)
+
 ### December 9 2022
 - Updated to GZDoom 4.10
 - Updated to use `core22`
