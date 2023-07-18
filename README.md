@@ -103,7 +103,7 @@ See https://github.com/coelckers/gzdoom/tree/master/docs/licenses and https://zd
 (Primarily GPL-3.0)
 
 ## Changes for the snap
-### December 18 july 2023
+### July 18 2023
 - For some reason, the snap seemed to not work, that should be fixed now!
 - (using `dekstop-qt5` instead of `desktop-glib-only` for `desktop-launch`)
 
