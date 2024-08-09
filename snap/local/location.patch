@@ -1,13 +1,18 @@
---- d_iwad.cpp	2021-07-05 16:02:48.175410473 +0200
-+++ d_iwad.cpp_modified	2021-07-05 17:13:12.378648398 +0200
-@@ -685,8 +685,8 @@
+diff --git a/src/d_iwad.cpp b/src/d_iwad.cpp
+index 4758064a3..cb612896a 100644
+--- a/src/d_iwad.cpp
++++ b/src/d_iwad.cpp
+@@ -720,9 +720,10 @@ int FIWadManager::IdentifyVersion (std::vector<std::string>&wadfiles, const char
  					  "2. Edit your ~/Library/Preferences/" GAMENAMELOWERCASE ".ini and add the directories\n"
  					  "of your iwads to the list beneath [IWADSearch.Directories]");
  #else
 -					  "1. Place one or more of these wads in ~/.config/" GAMENAMELOWERCASE "/.\n"
 -					  "2. Edit your ~/.config/" GAMENAMELOWERCASE "/" GAMENAMELOWERCASE ".ini and add the directories of your\n"
+-					  "iwads to the list beneath [IWADSearch.Directories]");
 +					  "1. Place one or more of these wads in ~/snap/gzdoom/current/.config/" GAMENAMELOWERCASE "/.\n"
 +					  "2. Edit your ~/snap/gzdoom/current/.config/" GAMENAMELOWERCASE "/" GAMENAMELOWERCASE ".ini and add the directories of your\n"
- 					  "iwads to the list beneath [IWADSearch.Directories]");
++					  "iwads to the list beneath [IWADSearch.Directories]\n\n"
++                      "NOTE: this snap does not use the home interface and thus cannot access directories outside of its own.");
  #endif
  	}
+ 	int pick = 0;
