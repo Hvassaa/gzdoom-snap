@@ -1,6 +1,6 @@
 name: gzdoom
 base: core22
-version: '4.10.0'
+version: '4.12.2'
 summary: Doom Source Port
 description: |
   Snap build from https://github.com/Hvassaa/gzdoom-snap
@@ -32,8 +32,8 @@ layout:
 
 parts:
   gzdoom:
-    source: https://github.com/coelckers/gzdoom.git
-    source-tag: 'g4.10.0'
+    source: https://github.com/ZDoom/gzdoom.git
+    source-tag: 'g4.12.2'
     override-pull: |
       snapcraftctl pull
       patch $SNAPCRAFT_PART_SRC/src/d_iwad.cpp < $SNAPCRAFT_PROJECT_DIR/snap/local/location.patch # change "wad not found" path description
@@ -82,8 +82,8 @@ parts:
       - zmusic
       - desktop-qt5
   zmusic:
-    source: https://github.com/coelckers/ZMusic.git
-    source-tag: '1.1.12'
+    source: https://github.com/ZDoom/ZMusic.git
+    source-tag: '1.1.13'
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
