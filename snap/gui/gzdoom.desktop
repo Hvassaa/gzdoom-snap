@@ -5,5 +5,5 @@ Icon=${SNAP}/meta/gui/gzdoom.png
 Comment=The GZDoom Source Port
 Keywords=doom;gzdoom
 Type=Application
-Categories=Game;
+Categories=Application;Game;
 StartupNotify=true
