@@ -7,3 +7,4 @@ Keywords=doom;gzdoom
 Type=Application
 Categories=Game;
 StartupNotify=true
+MimeType=application/x-doom-wad;
