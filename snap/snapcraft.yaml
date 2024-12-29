@@ -50,7 +50,7 @@ layout:
 parts:
   gzdoom:
     source: https://github.com/ZDoom/gzdoom.git
-    source-tag: 'g4.12.2'
+    source-tag: 'g4.14.0'
     override-pull: |
       craftctl default
       craftctl set version=$(git describe --tags --abbrev=10 | sed 's/^g//')
@@ -99,7 +99,7 @@ parts:
       - zmusic
   zmusic:
     source: https://github.com/ZDoom/ZMusic.git
-    source-tag: '1.1.13'
+    source-tag: '1.1.14'
     plugin: cmake
     cmake-parameters:
       - -DCMAKE_BUILD_TYPE=Release
