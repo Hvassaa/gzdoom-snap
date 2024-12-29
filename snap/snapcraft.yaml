@@ -15,13 +15,22 @@ source-code: "https://github.com/Hvassaa/gzdoom-snap"
 grade: stable
 confinement: strict
 
+plugs:
+  graphics-core22:
+    interface: content
+    target: $SNAP/graphics
+    default-provider: mesa-core22
+
 apps:
   gzdoom:
+    command-chain:
+      - bin/graphics-core22-wrapper
     command: usr/local/bin/gzdoom
     plugs:
       - opengl
       - x11
       - wayland
+      - graphics-core22
       - desktop
       - desktop-legacy
       - audio-playback
@@ -33,6 +42,10 @@ apps:
 layout:
   /usr/local/share/games/doom:
     bind: $SNAP/usr/local/share/games/doom
+  /usr/share/libdrm:
+    bind: $SNAP/graphics/libdrm
+  /usr/share/drirc.d:
+    symlink: $SNAP/graphics/drirc.d
 
 parts:
   gzdoom:
@@ -64,7 +77,6 @@ parts:
       - libgtk-3-dev
       - timidity
       - nasm
-      - libgl1-mesa-dev
       - tar
       - libsdl1.2-dev
       - libglew-dev
@@ -96,3 +108,13 @@ parts:
       - g++
     stage-packages:
       - libasound2
+  graphics-core22:
+    after:
+      - gzdoom
+    source: https://github.com/canonical/gpu-snap.git
+    plugin: dump
+    override-prime: |
+      craftctl default
+      ${CRAFT_PART_SRC}/bin/graphics-core22-cleanup mesa-core22 nvidia-core22
+    prime:
+    - bin/graphics-core22-wrapper
