@@ -30,7 +30,7 @@ Furthermore, I only have amd64 hardware avaible, so that is what I can test it o
 If you have other hardware avaible and you have tested it there, let me know as well.
 
 ## Version
-4.10
+4.14.0
 
 ## Installation
 ([Don't have snapd installed?](https://snapcraft.io/docs/core/install))
@@ -67,19 +67,14 @@ The first time you launch the app, it will inform you that no WADs were found, d
 * ~~Sound does not seem to be working~~
 * The snap has to be run before the directory structure is set up (for WADs/.ini)
 * ~~Some problems on KDE (see https://forum.snapcraft.io/t/how-to-integrate-with-kde/14887/4)~~ (tested under plasma 5.21.4 on ubuntu 21.04)
+* GUS and WildMidi MIDI devices do not work
 
 ## Screenshots
 <h1 align="center">
   <img src="screenshot1.png" alt="Screenshot 1 here!">
   <br />
 </h1>
-<p align="center">The WAD selector, under Gnome</p>
-
-<h1 align="center">
-  <img src="screenshot2.png" alt="Screenshot 1 here!">
-  <br />
-</h1>
-<p align="center">The WAD selector, under KDE Plasma on Wayland!</p>
+<p align="center">The WAD selector</p>
 
 <h1 align="center">
   <img src="screenshot3.png" alt="Screenshot 2 here!">
@@ -103,6 +98,14 @@ See https://github.com/coelckers/gzdoom/tree/master/docs/licenses and https://zd
 (Primarily GPL-3.0)
 
 ## Changes for the snap
+### December 29 2024
+- Updated to GZDoom 4.14.0
+- Updated to Zmusic 1.1.14
+- Update 'no-wads-found' message with snap specific note
+- Dropped deprecated `desktop-qt5` in favor of `kde-neon` extension and `graphics-core22` interface
+- Update desktop file with "wad" mimetype association
+- Misc. snapcraft.yaml fixes 
+
 ### July 18 2023
 - For some reason, the snap seemed to not work, that should be fixed now!
 - (using `dekstop-qt5` instead of `desktop-glib-only` for `desktop-launch`)
