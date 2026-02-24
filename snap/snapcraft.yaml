@@ -1,6 +1,6 @@
 name: gzdoom
 title: GZDoom
-base: core22
+base: core24
 adopt-info: gzdoom # version is set based on the git tag we check out
 summary: Doom Source Port
 description: |
@@ -16,36 +16,31 @@ grade: stable
 confinement: strict
 
 plugs:
-  graphics-core22:
+  gpu-2404:
     interface: content
-    target: $SNAP/graphics
-    default-provider: mesa-core22
+    target: $SNAP/gpu-2404
+    default-provider: mesa-2404
 
 apps:
   gzdoom:
     command-chain:
-      - bin/graphics-core22-wrapper
+      - bin/gpu-2404-wrapper
     command: usr/local/bin/gzdoom
     plugs:
       - opengl
       - x11
       - wayland
-      - graphics-core22
+      - gpu-2404
       - desktop
-      - desktop-legacy
       - audio-playback
-    extensions:
-      - kde-neon
     environment:
-      KDE_FULL_SESSION: "false"
+      LD_LIBRARY_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$LD_LIBRARY_PATH
 
 layout:
   /usr/local/share/games/doom:
     bind: $SNAP/usr/local/share/games/doom
-  /usr/share/libdrm:
-    bind: $SNAP/graphics/libdrm
-  /usr/share/drirc.d:
-    symlink: $SNAP/graphics/drirc.d
+  /usr/share/X11/XErrorDB:
+    symlink: $SNAP/gpu-2404/X11/XErrorDB
 
 parts:
   gzdoom:
@@ -60,7 +55,7 @@ parts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DNO_FMOD=ON # only necessary for gzdoom < 3
       - -DZMUSIC_INCLUDE_DIR=$SNAPCRAFT_STAGE/usr/include
-      - -DZMUSIC_LIBRARIES=$SNAPCRAFT_STAGE/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libzmusic.so
+      - -DZMUSIC_LIBRARIES=$SNAPCRAFT_STAGE/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/libzmusic.so
     build-packages:
       - g++
       - make
@@ -82,10 +77,9 @@ parts:
       - libglew-dev
       - libvpx-dev
     stage-packages:
-      - kdialog
       - gxmessage
       - libsdl2-2.0-0
-      - libvpx7
+      - libvpx9
       - libgomp1
       - fluidsynth
       - libfluidsynth3
@@ -94,9 +88,9 @@ parts:
       - libopenal1
       - libmpg123-0
       - libsndfile1
-      - qtwayland5
       - libaudio2
       - libgtk2.0-0
+      - libpulse0
     after:
       - zmusic
   zmusic:
@@ -110,13 +104,17 @@ parts:
       - g++
     stage-packages:
       - libasound2
-  graphics-core22:
+      - libpulse0
+      - libsdl2-2.0-0
+  gpu-2404:
     after:
       - gzdoom
     source: https://github.com/canonical/gpu-snap.git
     plugin: dump
     override-prime: |
       craftctl default
-      ${CRAFT_PART_SRC}/bin/graphics-core22-cleanup mesa-core22 nvidia-core22
+      ${CRAFT_PART_SRC}/bin/gpu-2404-cleanup mesa-2404
+      # Workaround for https://bugs.launchpad.net/snapd/+bug/2055273
+      mkdir -p "${CRAFT_PRIME}/gpu-2404"
     prime:
-    - bin/graphics-core22-wrapper
+    - bin/gpu-2404-wrapper
