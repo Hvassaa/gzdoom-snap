@@ -26,6 +26,8 @@ apps:
     command-chain:
       - bin/gpu-2404-wrapper
     command: usr/local/bin/gzdoom
+    extensions:
+      - gnome
     plugs:
       - opengl
       - x11
@@ -33,14 +35,10 @@ apps:
       - gpu-2404
       - desktop
       - audio-playback
-    environment:
-      LD_LIBRARY_PATH: $SNAP/usr/lib/$CRAFT_ARCH_TRIPLET_BUILD_FOR/pulseaudio:$LD_LIBRARY_PATH
 
 layout:
   /usr/local/share/games/doom:
     bind: $SNAP/usr/local/share/games/doom
-  /usr/share/X11/XErrorDB:
-    symlink: $SNAP/gpu-2404/X11/XErrorDB
 
 parts:
   gzdoom:
@@ -103,7 +101,6 @@ parts:
     build-packages:
       - g++
     stage-packages:
-      - libasound2
       - libpulse0
       - libsdl2-2.0-0
   gpu-2404:
